@@ -9,6 +9,17 @@ var mastermindGame = {
             this.secretCode.push(j);
             i++;
         };
+    },
+    playerGuess: function() {
+        var i = 1;
+        var guessArray = [];
+        while(i <= 4) {
+            var guess = prompt("Guess a number between 0 and 7. Digit number " + i);
+            var guessNum = Number(guess);
+            guessArray.push(guessNum);
+            i++;
+        };
+        return guessArray;
     }
 };
 
