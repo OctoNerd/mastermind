@@ -10,6 +10,7 @@ var mastermindGame = {
             i++;
         };
     },
+    //prompts player to guess 4 digits which are then added to an array
     playerGuess: function() {
         var i = 1;
         var guessArray = [];
@@ -19,7 +20,21 @@ var mastermindGame = {
             guessArray.push(guessNum);
             i++;
         };
-        return guessArray;
+        this.colorCheck(guessArray, this.secretCode);
+        //return guessArray;
+    },
+    colorCheck: function(guessArray,secretCode) {
+        var guessIndex = 0;
+        var codeIndex = 0;
+        var correctColor = 0;
+        for(guessIndex=0; guessIndex<4; guessIndex++) {
+            for(codeIndex=0; codeIndex<4; codeIndex++) {
+                 if(guessArray[guessIndex] == secretCode[codeIndex]) {
+                    correctColor++;
+                 };
+            };
+        };
+        console.log(correctColor);
     }
 };
 
