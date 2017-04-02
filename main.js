@@ -20,31 +20,33 @@ var mastermindGame = {
             guessArray.push(guessNum);
             i++;
         };
-        this.colorCheck(guessArray, this.secretCode);
-        this.positionCheck(guessArray, this.secretCode);
+        this.resultCheck(guessArray, this.secretCode);
     },
-    colorCheck: function(guessArray,secretCode) {
+    //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
+    resultCheck: function(guessArray,secretCode) {
         var guessIndex = 0;
         var codeIndex = 0;
         var correctColor = 0;
+        var correctPosition = 0;
         for(guessIndex=0; guessIndex<4; guessIndex++) {
             for(codeIndex=0; codeIndex<4; codeIndex++) {
                  if(guessArray[guessIndex] == secretCode[codeIndex]) {
                     correctColor++;
                  };
             };
-        };
-        console.log("Number of digits correct: " + correctColor);
-    },
-    positionCheck: function(guessArray, secretCode) {
-        var index = 0;
-        var correctPosition = 0;
-        for(index=0; index<4; index++) {
-            if(guessArray[index]==secretCode[index]) {
+            if(guessArray[guessIndex] == secretCode[guessIndex]) {
                 correctPosition++;
             };
         };
+        console.log("Number of digits correct: " + correctColor);
         console.log("Number of positions correct: " + correctPosition);
+        this.feedbackPegs(correctColor, correctPosition);
+    },
+    //finds number of black and white feedback pegs. Correct position implies correct color.
+    feedbackPegs: function(correctColor, correctPosition) {
+        var whitePegs = correctColor - correctPosition;
+        console.log("Black pegs: " + correctPosition);
+        console.log("White pegs: " + whitePegs);
     }
 };
 
