@@ -15,13 +15,13 @@ var mastermindGame = {
         var i = 1;
         var guessArray = [];
         while(i <= 4) {
-            var guess = prompt("Guess a number between 0 and 7. Digit number " + i);
+            var guess = prompt("Guess digit number " + i);
             var guessNum = Number(guess);
             guessArray.push(guessNum);
             i++;
         };
         this.colorCheck(guessArray, this.secretCode);
-        //return guessArray;
+        this.positionCheck(guessArray, this.secretCode);
     },
     colorCheck: function(guessArray,secretCode) {
         var guessIndex = 0;
@@ -34,9 +34,20 @@ var mastermindGame = {
                  };
             };
         };
-        console.log(correctColor);
+        console.log("Number of digits correct: " + correctColor);
+    },
+    positionCheck: function(guessArray, secretCode) {
+        var index = 0;
+        var correctPosition = 0;
+        for(index=0; index<4; index++) {
+            if(guessArray[index]==secretCode[index]) {
+                correctPosition++;
+            };
+        };
+        console.log("Number of positions correct: " + correctPosition);
     }
 };
 
 mastermindGame.codeGenerator();
 console.log(mastermindGame.secretCode);
+mastermindGame.playerGuess();
