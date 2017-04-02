@@ -25,7 +25,6 @@ var mastermindGame = {
     },
     //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
     checkResult: function(guessArray,secretCode) {
-        debugger;
         var guessIndex = 0;
         var codeIndex = 0;
         var correctColor = 0;
@@ -58,6 +57,7 @@ var mastermindGame = {
 
         console.log("Number of digits correct: " + correctColor);
         console.log("Number of positions correct: " + correctPosition);
+
         console.log("Black pegs: " + this.blackPegs);
         console.log("White pegs: " + this.whitePegs);
     },
@@ -67,7 +67,7 @@ var mastermindGame = {
             this.whitePegs = 0;
             this.blackPegs = 0;
             this.turnCounter = 1;
-        } else if(this.turnCounter == 10){
+        } else if (this.turnCounter == 10){
             alert("Game over. You lost.");
             this.whitePegs = 0;
             this.blackPegs = 0;
@@ -82,5 +82,5 @@ var mastermindGame = {
 };
 
 mastermindGame.generateCode();
-console.log(mastermindGame.secretCode);
+//console.log(mastermindGame.secretCode);
 mastermindGame.playerGuess();
