@@ -72,3 +72,66 @@ p {
     display: block;
     font-size: 20px;
 }
+.button-row {
+    width: 836px;
+    height: 50px;
+    background-color: gold;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.color-button-wrap {
+    width: 500px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.color-button {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 3px solid black;
+    cursor: pointer;
+}
+.color-button:hover {
+    box-shadow: 0px 0px 5px #555;
+}
+
+#btnRed {background-color: #d81313;}
+#btnRed:hover {background-color: #f91313}
+#btnOrange {background-color: #e09916;}
+#btnOrange:hover {background-color: #f7a918;}
+#btnYellow {background-color: #e5e519;}
+#btnYellow:hover {background-color: #f7f71b;}
+#btnGreen {background-color: #1cc91c;}
+#btnGreen:hover {background-color: #23ea23;}
+#btnBlue {background-color: #1d80e2;}
+#btnBlue:hover {background-color: #1d8bf9;}
+#btnPurple {background-color: #9e149e;}
+#btnPurple:hover {background-color: #d31bd3;}
+#btnWhite {background-color: #e5e5e5;}
+#btnWhite:hover {background-color: #eee;}
+#btnBlack {background-color: #222;}
+#btnBlack:hover {background-color: #3d3d3d;}
+
+.submit-button {
+    width: 100px;
+    height: 30px;
+    border: 3px solid black;
+    background-color: dodgerblue;
+    color: black;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align: center;
+    cursor: pointer;
+    padding-top: 6px;
+}
+.submit-button:hover {
+    box-shadow: 0px 0px 5px #555;
+}
+.submit-button:hover {
+    background-color: deepskyblue;
+}
