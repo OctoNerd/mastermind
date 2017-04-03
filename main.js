@@ -83,4 +83,4 @@ var mastermindGame = {
 
 mastermindGame.generateCode();
 //console.log(mastermindGame.secretCode);
-mastermindGame.playerGuess();
+//mastermindGame.playerGuess();
