@@ -1,6 +1,8 @@
 var mastermindGame = {
     //array to store the secret code.
     secretCode: [],
+    //stores the guess digits
+    guessArray: [],
     //generates four random numbers between 0 and 7
     generateCode: function() {
         var i = 0,j;
@@ -11,16 +13,22 @@ var mastermindGame = {
         }
     },
     //prompts player to guess 4 digits which are then added to an array
-    playerGuess: function() {
-        var guessArray = [];
+    playerGuess: function(colorNumber) {
         console.log("Turn number " + this.turnCounter);
         if(this.turnCounter <= 10) {
-            for(i = 0; i < 4; i++) {
-                var guess = prompt("Guess digit number " + i);
-                var guessNum = Number(guess);
-                guessArray.push(guessNum);
+            var i = 0;
+            if (i < 4) {
+                this.guessArray.push(colorNumber);
+                console.log(this.guessArray);
             }
-            this.checkResult(guessArray, this.secretCode);
+            i++
+            // for(i = 0; i < 4; i++) {
+            //     var guess = prompt("Guess digit number " + i);
+            //     var guessNum = Number(guess);
+            //     guessArray.push(guessNum);
+            // }
+            
+            //this.checkResult(guessArray, this.secretCode);
         }
     },
     //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
@@ -81,12 +89,68 @@ var mastermindGame = {
     turnCounter: 1
 }
 
+var handlers = {
+    addGuess: function(colorNumber) {
+        mastermindGame.playerGuess(colorNumber);
+    }
+}
+
 var view = {
     setUpEventListeners: function() {
         document.querySelector(".button-row").addEventListener('click', function(event) {
             var elementClicked = event.target;
-            console.log(elementClicked);
+            //console.log(elementClicked);
+            if (elementClicked.className == "color-button") {
+                view.changeColor(elementClicked);
+            }
         });
+    },
+    changeColor: function(elementClicked) {
+        switch(elementClicked.id) {
+            case "btnRed":
+                //change color to red. color number 0
+                handlers.addGuess(0);
+                console.log("Guessed Red");
+                break;
+            case "btnOrange":
+                //change color to orange. color number 1
+                handlers.addGuess(1);
+                console.log("Guessed Orange");
+                break;
+            case "btnYellow":
+                //change color to yellow. color number 2
+                handlers.addGuess(2);
+                console.log("Guessed Yellow");
+                break;
+            case "btnGreen":
+                //change color to green. color number 3
+                handlers.addGuess(3);
+                console.log("Guessed Green");
+                break;
+            case "btnBlue":
+                //change color to blue. color number 4
+                handlers.addGuess(4);
+                console.log("Guessed Blue");
+                break;
+            case "btnPurple":
+                //change color to purple. color number 5
+                handlers.addGuess(5);
+                console.log("Guessed Purple");
+                break;
+            case "btnWhite":
+                //change color to white. color number 6
+                handlers.addGuess(6);
+                console.log("Guessed White");
+                break;
+            case "btnBlack":
+                //change color to black. color number 7
+                handlers.addGuess(7);
+                console.log("Guessed Black");
+                break;
+            default:
+                //Should I just put this as the last button..??
+                break;
+        }
     }
 }
 
