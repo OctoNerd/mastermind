@@ -79,8 +79,18 @@ var mastermindGame = {
     whitePegs: 0,
     blackPegs: 0,
     turnCounter: 1
-};
+}
+
+var view = {
+    setUpEventListeners: function() {
+        document.querySelector(".button-row").addEventListener('click', function(event) {
+            var elementClicked = event.target;
+            console.log(elementClicked);
+        });
+    }
+}
 
 mastermindGame.generateCode();
+view.setUpEventListeners();
 //console.log(mastermindGame.secretCode);
 //mastermindGame.playerGuess();
