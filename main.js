@@ -20,13 +20,9 @@ var mastermindGame = {
             if (this.guessDigit < 5) {
                 this.guessArray.push(colorNumber);
                 console.log(this.guessArray);
+                this.guessDigit++;
             }
-            this.guessDigit++;
-            // for(i = 0; i < 4; i++) {
-            //     var guess = prompt("Guess digit number " + i);
-            //     var guessNum = Number(guess);
-            //     guessArray.push(guessNum);
-            // }
+            
             
             //this.checkResult(guessArray, this.secretCode);
         }
@@ -92,7 +88,9 @@ var mastermindGame = {
 
 var handlers = {
     addGuess: function(colorNumber) {
-        mastermindGame.playerGuess(colorNumber);
+        if (mastermindGame.guessDigit < 5) {
+            mastermindGame.playerGuess(colorNumber);
+        }
     }
 }
 
@@ -111,67 +109,69 @@ var view = {
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
         var currentPeg = currentTurnColumn.firstChild.nextSibling.nextSibling.nextSibling.querySelector(".pegSlot" + mastermindGame.guessDigit);
 
-        console.log(currentPeg);
-        switch(elementClicked.id) {
-            case "btnRed":
-                //change color to red. color number 0
-                handlers.addGuess(0);
-                currentPeg.style.background = '#d81313';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Red");
-                break;
-            case "btnOrange":
-                //change color to orange. color number 1
-                handlers.addGuess(1);
-                currentPeg.style.background = '#e09916';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Orange");
-                break;
-            case "btnYellow":
-                //change color to yellow. color number 2
-                handlers.addGuess(2);
-                currentPeg.style.background = '#e5e519';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Yellow");
-                break;
-            case "btnGreen":
-                //change color to green. color number 3
-                handlers.addGuess(3);
-                currentPeg.style.background = '#1cc91c';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Green");
-                break;
-            case "btnBlue":
-                //change color to blue. color number 4
-                handlers.addGuess(4);
-                currentPeg.style.background = '#1d80e2';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Blue");
-                break;
-            case "btnPurple":
-                //change color to purple. color number 5
-                handlers.addGuess(5);
-                currentPeg.style.background = '#9e149e';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Purple");
-                break;
-            case "btnWhite":
-                //change color to white. color number 6
-                handlers.addGuess(6);
-                currentPeg.style.background = '#e5e5e5';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed White");
-                break;
-            case "btnBlack":
-                //change color to black. color number 7
-                handlers.addGuess(7);
-                currentPeg.style.background = '#222';
-                currentPeg.style.boxShadow = '0px 2px 3px #555';
-                console.log("Guessed Black");
-                break;
-            default:
-                //Should I just put this as the last button..??
-                break;
+
+        if (mastermindGame.guessDigit < 5) {
+            switch(elementClicked.id) {
+                case "btnRed":
+                    //change color to red. color number 0
+                    handlers.addGuess(0);
+                    currentPeg.style.background = '#d81313';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Red");
+                    break;
+                case "btnOrange":
+                    //change color to orange. color number 1
+                    handlers.addGuess(1);
+                    currentPeg.style.background = '#e09916';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Orange");
+                    break;
+                case "btnYellow":
+                    //change color to yellow. color number 2
+                    handlers.addGuess(2);
+                    currentPeg.style.background = '#e5e519';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Yellow");
+                    break;
+                case "btnGreen":
+                    //change color to green. color number 3
+                    handlers.addGuess(3);
+                    currentPeg.style.background = '#1cc91c';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Green");
+                    break;
+                case "btnBlue":
+                    //change color to blue. color number 4
+                    handlers.addGuess(4);
+                    currentPeg.style.background = '#1d80e2';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Blue");
+                    break;
+                case "btnPurple":
+                    //change color to purple. color number 5
+                    handlers.addGuess(5);
+                    currentPeg.style.background = '#9e149e';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Purple");
+                    break;
+                case "btnWhite":
+                    //change color to white. color number 6
+                    handlers.addGuess(6);
+                    currentPeg.style.background = '#e5e5e5';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed White");
+                    break;
+                case "btnBlack":
+                    //change color to black. color number 7
+                    handlers.addGuess(7);
+                    currentPeg.style.background = '#222';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    console.log("Guessed Black");
+                    break;
+                default:
+                    //Should I just put this as the last button..??
+                    break;
+            }
         }
     }
 }
