@@ -17,12 +17,9 @@ var mastermindGame = {
     playerGuess: function(colorNumber) {
         console.log("Turn number " + this.turnCounter);
         if(this.turnCounter <= 10) {
-            if (this.guessDigit < 5) {
-                this.guessArray.push(colorNumber);
-                console.log(this.guessArray);
-                this.guessDigit++;
-            }
-            
+            this.guessArray.push(colorNumber);
+            console.log(this.guessArray);
+            this.guessDigit++;            
             
             //this.checkResult(guessArray, this.secretCode);
         }
@@ -88,9 +85,11 @@ var mastermindGame = {
 
 var handlers = {
     addGuess: function(colorNumber) {
-        if (mastermindGame.guessDigit < 5) {
-            mastermindGame.playerGuess(colorNumber);
-        }
+        mastermindGame.playerGuess(colorNumber);
+    },
+    clearPegs: function() {
+        mastermindGame.guessDigit = 1;
+        mastermindGame.guessArray = [];
     }
 }
 
@@ -101,6 +100,8 @@ var view = {
             //console.log(elementClicked);
             if (elementClicked.className == "color-button") {
                 view.changeColor(elementClicked);
+            } else if (elementClicked.className == "button btnClear") {
+                view.clearPegs();
             }
         });
     },
@@ -173,6 +174,28 @@ var view = {
                     break;
             }
         }
+    },
+    clearPegs: function() {
+        var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
+        var currentTurnColumn = document.querySelector(currentTurnColumnId);
+        var colorPeg1 = currentTurnColumn.querySelector(".pegSlot1");
+        var colorPeg2 = currentTurnColumn.querySelector(".pegSlot2");
+        var colorPeg3 = currentTurnColumn.querySelector(".pegSlot3");
+        var colorPeg4 = currentTurnColumn.querySelector(".pegSlot4");
+
+        colorPeg1.style.background = "gray";
+        colorPeg1.style.boxShadow = "";
+
+        colorPeg2.style.background = "gray";
+        colorPeg2.style.boxShadow = "";
+
+        colorPeg3.style.background = "gray";
+        colorPeg3.style.boxShadow = "";
+
+        colorPeg4.style.background = "gray";
+        colorPeg4.style.boxShadow = "";
+
+        handlers.clearPegs();
     }
 }
 
