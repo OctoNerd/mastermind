@@ -108,24 +108,23 @@ p {
     font-size: 20px;
 }
 .turnNumber-current {
-    text-shadow: 1px 0px 5px gold , 0px 1px 5px yellow, -1px 0px 5px moccasin, 
-  0px -1px 5px lightgoldenrodyellow, 1px 4px 5px white;
+    text-shadow: 10px 0px 10px white , 0px 10px 10px white, -10px 0px 10px white, 
+  0px -10px 10px white, 10px 8px 10px white;
 }
 .button-row {
     width: 836px;
-    height: 50px;
-    background-color: gold;
+    height: 60px;
     display: flex;
+    background-color: darkgray;
     justify-content: space-around;
     align-items: center;
 }
 .color-button-wrap {
-    width: 500px;
+    width: 450px;
     height: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 20px;
 }
 .color-button {
     height: 40px;
@@ -165,19 +164,17 @@ p {
     text-align: center;
     cursor: pointer;
     border: 2px solid black;
+    padding-top: 6px;
+}
+.button:hover {
+    box-shadow: 0px 0px 5px #555;
 }
 .btnClear {
     background-color: white;
-    padding-top: 6px;
-}
-.btnClear:hover {
-    box-shadow: 0px 0px 5px #555;
 }
 .btnSubmit {
     background-color: limegreen;
-    padding-top: 6px;
-    margin-right: 20px;
 }
-.btnSubmit:hover {
-    box-shadow: 0px 0px 5px #555;
+.btnReset {
+    background-color: lightgray;
 }

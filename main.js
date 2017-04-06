@@ -11,7 +11,7 @@ var mastermindGame = {
             this.secretCode.push(j);
             i++;
         }
-        console.log(this.secretCode);
+        //console.log(this.secretCode);
     },
     guessDigit: 1,
     //prompts player to guess 4 digits which are then added to an array
@@ -20,9 +20,9 @@ var mastermindGame = {
             this.guessArray.push(colorNumber);
             this.guessDigit++;            
         }
-        if(this.guessDigit == 5) {
-            console.log(this.guessArray);
-        }
+        // if(this.guessDigit == 5) {
+        //     console.log(this.guessArray);
+        // }
     },
     //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
     checkResult: function() {
@@ -101,7 +101,7 @@ var handlers = {
             mastermindGame.checkResult();
             if(mastermindGame.gameOver == false) {
                 view.highlightTurnNumber();
-                view.unHighlightLastTurnNumber();
+                view.unHighlightLastTurnNumber(mastermindGame.turnCounter);
             }
         }
     },
@@ -112,6 +112,19 @@ var handlers = {
     },
     displaySecretCode: function() {
         view.displaySecretCode(mastermindGame.secretCode);
+    },
+    reset: function() {
+        view.reset();
+        mastermindGame.guessArray = [];
+        mastermindGame.gameOver = false;
+        view.unHighlightLastTurnNumber(mastermindGame.turnCounter + 1);
+        mastermindGame.turnCounter = 1;
+        mastermindGame.guessDigit = 1;
+        mastermindGame.blackPegs = 0;
+        mastermindGame.whitePegs = 0;
+        mastermindGame.secretCode = [];
+        mastermindGame.generateCode();
+        view.highlightTurnNumber();
     }
 }
 
@@ -125,6 +138,8 @@ var view = {
                 handlers.clearPegs();
             } else if (elementClicked.className == "button btnSubmit") {
                 handlers.submitGuess();
+            } else if (elementClicked.className == "button btnReset") {
+                handlers.reset();
             }
         });
     },
@@ -237,8 +252,8 @@ var view = {
         var turnNumberElement = currentTurnColumn.querySelector(".turnNumber");
         turnNumberElement.className = "turnNumber-current";
     },
-    unHighlightLastTurnNumber: function() {
-        var lastTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter - 1);
+    unHighlightLastTurnNumber: function(turnNumber) {
+        var lastTurnColumnId = "#turnColumn" + parseInt(turnNumber - 1);
         var lastTurnColumn = document.querySelector(lastTurnColumnId);
         var lastTurnNumberElement = lastTurnColumn.querySelector(".turnNumber-current");
         lastTurnNumberElement.className = "turnNumber";
@@ -283,6 +298,31 @@ var view = {
                     break;
                 default:
                     break;
+            }
+        }
+    },
+    reset: function() {
+        for(i=1; i<11; i++) {
+            var currentTurnColumnId = "#turnColumn" + parseInt(i);
+            var currentTurnColumn = document.querySelector(currentTurnColumnId);
+            var answerColumn = document.querySelector(".board-answerColumn");
+            
+            for(j=1; j<5; j++) {
+                var currentFeedbackPeg = currentTurnColumn.querySelector(".feedbackPos" + parseInt(j) + "-full");
+                if (currentFeedbackPeg != null) {
+                    currentFeedbackPeg.className = "feedbackPeg feedbackPos" + parseInt(j);
+                }
+
+                var currentPeg = currentTurnColumn.querySelector(".pegSlot" + parseInt(j));
+                currentPeg.style.background = "gray";
+                currentPeg.style.boxShadow = "";
+
+                var currentAnsPeg = answerColumn.querySelector(".pegSlot" + parseInt(j-1));
+                if (currentAnsPeg != null) {
+                    currentAnsPeg.style.background = "gray";
+                    currentAnsPeg.style.boxShadow = "";
+                }
+                
             }
         }
     }
