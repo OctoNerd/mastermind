@@ -16,30 +16,30 @@ var mastermindGame = {
     guessDigit: 1,
     //prompts player to guess 4 digits which are then added to an array
     playerGuess: function(colorNumber) {
-        //console.log("Turn number " + this.turnCounter);
         if(this.turnCounter <= 10) {
             this.guessArray.push(colorNumber);
-            console.log(this.guessArray);
             this.guessDigit++;            
+        }
+        if(this.guessDigit == 5) {
+            console.log(this.guessArray);
         }
     },
     //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
     checkResult: function() {
-        //debugger;
         var guessIndex = 0;
         var codeIndex = 0;
         var correctColor = 0;
         var correctPosition = 0;
         for(guessIndex=0; guessIndex<4; guessIndex++) { //iterate through guessArray
             var k = 3;
-            var flag = 0;
+            var flag = false;
             while(k > guessIndex){
                 if(this.guessArray[guessIndex] == this.guessArray[k]) {//check guessArray against self
-                    flag++;
+                    flag = true;
                 }
                 k--;
             }
-            if (flag == 0) { //if it doesn't match
+            if (flag == false) { //if it doesn't match
                 for(codeIndex=0; codeIndex<4; codeIndex++) {//check against secret code
                     if(this.guessArray[guessIndex] == this.secretCode[codeIndex]) {
                         correctColor++;
@@ -62,16 +62,12 @@ var mastermindGame = {
             handlers.displayFeedback();
             handlers.displaySecretCode();
             alert("You won the game!");
-            this.whitePegs = 0;
-            this.blackPegs = 0;
-            this.turnCounter = 1;
+            this.gameOver = true;
         } else if (this.turnCounter == 10){
             handlers.displayFeedback();
             handlers.displaySecretCode();
             alert("Game over. You lost.");
-            this.whitePegs = 0;
-            this.blackPegs = 0;
-            this.turnCounter = 1;
+            this.gameOver = true;
         } else {
             handlers.displayFeedback();
             this.turnCounter++;
@@ -80,26 +76,39 @@ var mastermindGame = {
     },
     whitePegs: 0,
     blackPegs: 0,
-    turnCounter: 1
+    turnCounter: 1,
+    gameOver: false
 }
 
 var handlers = {
     addGuess: function(colorNumber) {
         mastermindGame.playerGuess(colorNumber);
     },
+    changeColor: function(elementClicked) {
+        if (mastermindGame.gameOver == false) {
+            view.changeColor(elementClicked);
+        }
+    },
     clearPegs: function() {
-        mastermindGame.guessDigit = 1;
-        mastermindGame.guessArray = [];
+        if (mastermindGame.gameOver == false) {
+            mastermindGame.guessDigit = 1;
+            mastermindGame.guessArray = [];
+            view.clearPegs();
+        }
     },
     submitGuess: function() {
-        if(mastermindGame.guessArray.length == 4) {
+        if(mastermindGame.guessArray.length == 4 && mastermindGame.gameOver == false) {
             mastermindGame.checkResult();
+            if(mastermindGame.gameOver == false) {
+                view.highlightTurnNumber();
+                view.unHighlightLastTurnNumber();
+            }
         }
-        view.highlightTurnNumber();
-        view.unHighlightLastTurnNumber();
     },
     displayFeedback: function() {
-        view.displayFeedback(mastermindGame.blackPegs, mastermindGame.whitePegs);
+        if(mastermindGame.gameOver == false) {
+            view.displayFeedback(mastermindGame.blackPegs, mastermindGame.whitePegs);
+        }
     },
     displaySecretCode: function() {
         view.displaySecretCode(mastermindGame.secretCode);
@@ -111,9 +120,9 @@ var view = {
         document.querySelector(".button-row").addEventListener('click', function(event) {
             var elementClicked = event.target;
             if (elementClicked.className == "color-button") {
-                view.changeColor(elementClicked);
+                handlers.changeColor(elementClicked);
             } else if (elementClicked.className == "button btnClear") {
-                view.clearPegs();
+                handlers.clearPegs();
             } else if (elementClicked.className == "button btnSubmit") {
                 handlers.submitGuess();
             }
@@ -198,8 +207,6 @@ var view = {
 
         colorPeg4.style.background = "gray";
         colorPeg4.style.boxShadow = "";
-
-        handlers.clearPegs();
     },
     displayFeedback: function(blackPegs, whitePegs) {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
