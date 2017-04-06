@@ -11,21 +11,20 @@ var mastermindGame = {
             this.secretCode.push(j);
             i++;
         }
+        console.log(this.secretCode);
     },
     guessDigit: 1,
     //prompts player to guess 4 digits which are then added to an array
     playerGuess: function(colorNumber) {
-        console.log("Turn number " + this.turnCounter);
+        //console.log("Turn number " + this.turnCounter);
         if(this.turnCounter <= 10) {
             this.guessArray.push(colorNumber);
             console.log(this.guessArray);
             this.guessDigit++;            
-            
-            //this.checkResult(guessArray, this.secretCode);
         }
     },
     //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
-    checkResult: function(guessArray,secretCode) {
+    checkResult: function() {
         var guessIndex = 0;
         var codeIndex = 0;
         var correctColor = 0;
@@ -34,19 +33,19 @@ var mastermindGame = {
             var k = 3;
             var flag = 0;
             while(k > guessIndex){
-                if(guessArray[guessIndex] == guessArray[k]) {//check guessArray against self
+                if(this.guessArray[guessIndex] == this.guessArray[k]) {//check guessArray against self
                     flag++;
                 }
                 k--;
             }
             if (flag == 0) { //if it doesn't match
                 for(codeIndex=0; codeIndex<4; codeIndex++) {//check against secret code
-                    if(guessArray[guessIndex] == secretCode[codeIndex]) {
+                    if(this.guessArray[guessIndex] == this.secretCode[codeIndex]) {
                         correctColor++;
                     }
                 }
             }
-            if(guessArray[guessIndex] == secretCode[guessIndex]) {//check it against secretCode for position
+            if(this.guessArray[guessIndex] == this.secretCode[guessIndex]) {//check it against secretCode for position
                 correctPosition++;
             }   
         }
@@ -75,8 +74,10 @@ var mastermindGame = {
             this.blackPegs = 0;
             this.turnCounter = 1;
         } else {
+            handlers.displayFeedback();
             this.turnCounter++;
         }
+        
     },
     whitePegs: 0,
     blackPegs: 0,
@@ -90,18 +91,28 @@ var handlers = {
     clearPegs: function() {
         mastermindGame.guessDigit = 1;
         mastermindGame.guessArray = [];
+    },
+    submitGuess: function() {
+        if(mastermindGame.guessArray.length == 4) {
+            mastermindGame.checkResult();
+        }
+    },
+    displayFeedback: function() {
+        view.displayFeedback(mastermindGame.blackPegs, mastermindGame.whitePegs);
     }
+
 }
 
 var view = {
     setUpEventListeners: function() {
         document.querySelector(".button-row").addEventListener('click', function(event) {
             var elementClicked = event.target;
-            //console.log(elementClicked);
             if (elementClicked.className == "color-button") {
                 view.changeColor(elementClicked);
             } else if (elementClicked.className == "button btnClear") {
                 view.clearPegs();
+            } else if (elementClicked.className == "button btnSubmit") {
+                handlers.submitGuess();
             }
         });
     },
@@ -118,56 +129,48 @@ var view = {
                     handlers.addGuess(0);
                     currentPeg.style.background = '#d81313';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Red");
                     break;
                 case "btnOrange":
                     //change color to orange. color number 1
                     handlers.addGuess(1);
                     currentPeg.style.background = '#e09916';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Orange");
                     break;
                 case "btnYellow":
                     //change color to yellow. color number 2
                     handlers.addGuess(2);
                     currentPeg.style.background = '#e5e519';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Yellow");
                     break;
                 case "btnGreen":
                     //change color to green. color number 3
                     handlers.addGuess(3);
                     currentPeg.style.background = '#1cc91c';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Green");
                     break;
                 case "btnBlue":
                     //change color to blue. color number 4
                     handlers.addGuess(4);
                     currentPeg.style.background = '#1d80e2';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Blue");
                     break;
                 case "btnPurple":
                     //change color to purple. color number 5
                     handlers.addGuess(5);
                     currentPeg.style.background = '#9e149e';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Purple");
                     break;
                 case "btnWhite":
                     //change color to white. color number 6
                     handlers.addGuess(6);
                     currentPeg.style.background = '#e5e5e5';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed White");
                     break;
                 case "btnBlack":
                     //change color to black. color number 7
                     handlers.addGuess(7);
                     currentPeg.style.background = '#222';
                     currentPeg.style.boxShadow = '0px 2px 3px #555';
-                    console.log("Guessed Black");
                     break;
                 default:
                     //Should I just put this as the last button..??
@@ -196,6 +199,37 @@ var view = {
         colorPeg4.style.boxShadow = "";
 
         handlers.clearPegs();
+    },
+    displayFeedback: function(blackPegs, whitePegs) {
+        var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
+        var currentTurnColumn = document.querySelector(currentTurnColumnId);
+        var feedbackBox = currentTurnColumn.firstChild.nextSibling;
+        var i = 1;
+        var currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
+        var blackPegCount = blackPegs;
+        var whitePegCount = whitePegs;
+        console.log("BlackPegCount: " + blackPegCount);
+        console.log("WhitePegCount: " + whitePegCount);
+        
+        
+        while(blackPegCount > 0) {
+            currentPeg.className = "feedbackPeg-black feedbackPos" + parseInt(i) + "-full";
+            blackPegCount--;
+            i++;
+            currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
+            //console.log("New black count: " + blackPegCount + " i: " + i);
+        }
+
+        while(whitePegCount > 0) {
+            currentPeg.className = "feedbackPeg-white feedbackPos" + parseInt(i) + "-full";
+            whitePegCount--;
+            i++;
+            currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
+            //console.log("New white count: " + whitePegCount + " i: " + i);
+        }
+
+        //console.log(blackPegs);
+        //console.log(whitePegs);
     }
 }
 
