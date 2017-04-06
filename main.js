@@ -25,6 +25,7 @@ var mastermindGame = {
     },
     //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
     checkResult: function() {
+        //debugger;
         var guessIndex = 0;
         var codeIndex = 0;
         var correctColor = 0;
@@ -55,20 +56,16 @@ var mastermindGame = {
         this.blackPegs = correctPosition;
         this.checkWin(this.blackPegs);
         this.guessDigit = 1;
-
-        console.log("Number of digits correct: " + correctColor);
-        console.log("Number of positions correct: " + correctPosition);
-
-        console.log("Black pegs: " + this.blackPegs);
-        console.log("White pegs: " + this.whitePegs);
     },
     checkWin: function(blackPegs) {
         if(blackPegs == 4) {
+            handlers.displayFeedback();
             alert("You won the game!");
             this.whitePegs = 0;
             this.blackPegs = 0;
             this.turnCounter = 1;
         } else if (this.turnCounter == 10){
+            handlers.displayFeedback();
             alert("Game over. You lost.");
             this.whitePegs = 0;
             this.blackPegs = 0;
@@ -76,8 +73,8 @@ var mastermindGame = {
         } else {
             handlers.displayFeedback();
             this.turnCounter++;
+            this.guessArray = [];
         }
-        
     },
     whitePegs: 0,
     blackPegs: 0,
@@ -96,6 +93,8 @@ var handlers = {
         if(mastermindGame.guessArray.length == 4) {
             mastermindGame.checkResult();
         }
+        view.highlightTurnNumber();
+        view.unHighlightLastTurnNumber();
     },
     displayFeedback: function() {
         view.displayFeedback(mastermindGame.blackPegs, mastermindGame.whitePegs);
@@ -120,8 +119,6 @@ var view = {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
         var currentPeg = currentTurnColumn.firstChild.nextSibling.nextSibling.nextSibling.querySelector(".pegSlot" + mastermindGame.guessDigit);
-
-
         if (mastermindGame.guessDigit < 5) {
             switch(elementClicked.id) {
                 case "btnRed":
@@ -208,32 +205,35 @@ var view = {
         var currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
         var blackPegCount = blackPegs;
         var whitePegCount = whitePegs;
-        console.log("BlackPegCount: " + blackPegCount);
-        console.log("WhitePegCount: " + whitePegCount);
-        
-        
         while(blackPegCount > 0) {
             currentPeg.className = "feedbackPeg-black feedbackPos" + parseInt(i) + "-full";
+            currentPeg.style.boxShadow = '0px 1px 2px #555';
             blackPegCount--;
             i++;
             currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
-            //console.log("New black count: " + blackPegCount + " i: " + i);
         }
-
         while(whitePegCount > 0) {
             currentPeg.className = "feedbackPeg-white feedbackPos" + parseInt(i) + "-full";
+            currentPeg.style.boxShadow = '0px 1px 2px #555';
             whitePegCount--;
             i++;
             currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
-            //console.log("New white count: " + whitePegCount + " i: " + i);
         }
-
-        //console.log(blackPegs);
-        //console.log(whitePegs);
+    },
+    highlightTurnNumber: function() {
+        var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
+        var currentTurnColumn = document.querySelector(currentTurnColumnId);
+        var turnNumberElement = currentTurnColumn.querySelector(".turnNumber");
+        turnNumberElement.className = "turnNumber-current";
+    },
+    unHighlightLastTurnNumber: function() {
+        var lastTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter - 1);
+        var lastTurnColumn = document.querySelector(lastTurnColumnId);
+        var lastTurnNumberElement = lastTurnColumn.querySelector(".turnNumber-current");
+        lastTurnNumberElement.className = "turnNumber";
     }
 }
 
 mastermindGame.generateCode();
 view.setUpEventListeners();
-//console.log(mastermindGame.secretCode);
-//mastermindGame.playerGuess();
+view.highlightTurnNumber();
