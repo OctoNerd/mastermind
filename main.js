@@ -60,12 +60,14 @@ var mastermindGame = {
     checkWin: function(blackPegs) {
         if(blackPegs == 4) {
             handlers.displayFeedback();
+            handlers.displaySecretCode();
             alert("You won the game!");
             this.whitePegs = 0;
             this.blackPegs = 0;
             this.turnCounter = 1;
         } else if (this.turnCounter == 10){
             handlers.displayFeedback();
+            handlers.displaySecretCode();
             alert("Game over. You lost.");
             this.whitePegs = 0;
             this.blackPegs = 0;
@@ -98,8 +100,10 @@ var handlers = {
     },
     displayFeedback: function() {
         view.displayFeedback(mastermindGame.blackPegs, mastermindGame.whitePegs);
+    },
+    displaySecretCode: function() {
+        view.displaySecretCode(mastermindGame.secretCode);
     }
-
 }
 
 var view = {
@@ -231,8 +235,52 @@ var view = {
         var lastTurnColumn = document.querySelector(lastTurnColumnId);
         var lastTurnNumberElement = lastTurnColumn.querySelector(".turnNumber-current");
         lastTurnNumberElement.className = "turnNumber";
+    },
+    displaySecretCode: function(secretCode) {
+        var answerColumn = document.querySelector(".board-answerColumn");
+        for (i=0; i<4; i++) {
+            var currentPeg = answerColumn.querySelector(".pegSlot" + parseInt(i));
+
+            switch(secretCode[i]) {
+                case 0:
+                    currentPeg.style.background = '#d81313';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 1:
+                    currentPeg.style.background = '#e09916';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 2:
+                    currentPeg.style.background = '#e5e519';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 3:
+                    currentPeg.style.background = '#1cc91c';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 4:
+                    currentPeg.style.background = '#1d80e2';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 5:
+                    currentPeg.style.background = '#9e149e';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 6:
+                    currentPeg.style.background = '#e5e5e5';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                case 7:
+                    currentPeg.style.background = '#222';
+                    currentPeg.style.boxShadow = '0px 2px 3px #555';
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
+
 
 mastermindGame.generateCode();
 view.setUpEventListeners();
