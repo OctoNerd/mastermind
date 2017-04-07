@@ -3,7 +3,8 @@
     justify-content: flex-start;
     height: 456px;
     width: 836px;
-    background-color: darkgray;
+    margin-left: auto;
+    margin-right: auto;
 }
 .board-turnColumn {
     display: flex;
@@ -12,9 +13,10 @@
     align-items: center;
     height: 456px;
     width: 76px;
-    background-color: lightgray;
+    background-color: #b59463;
     text-align: center;
     border-right: 1px solid black;
+    position: relative;
 }
 .board-answerColumn {
     display: flex;
@@ -22,12 +24,12 @@
     justify-content: center;
     height: 456px;
     width: 76px;
-    background-color: lightgray;
+    background-color: #b59463;
 }
 .board-turnColumn-feedbackBox {
     height: 76px;
     width: 76px;
-    background-color: lightgray;
+    background-color: #b59463;
     border-bottom: 1px solid black;
     position: relative;
 }
@@ -35,7 +37,7 @@
     height: 10px;
     width: 10px;
     border-radius: 50%;
-    background-color: gray;
+    background-color: #e8d8c0;
     position: absolute;
 }
 .feedbackPos1 {
@@ -94,7 +96,7 @@
     height: 36px;
     width: 36px;
     border-radius: 50%;
-    background-color: gray;
+    background-color: #e8d8c0;
 }
 .turnNumber-wrap {
     display: flex;
@@ -106,18 +108,30 @@
 }
 p {
     font-size: 20px;
+    z-index: 1;
 }
-.turnNumber-current {
-    text-shadow: 10px 0px 10px white , 0px 10px 10px white, -10px 0px 10px white, 
-  0px -10px 10px white, 10px 8px 10px white;
+.turnIndicator {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    background: yellow;
+    position: absolute;
+    left: 21px;
+    top: 400px;
+}
+.turnIndicator-hidden {
+    display: none;
 }
 .button-row {
     width: 836px;
     height: 60px;
     display: flex;
-    background-color: darkgray;
+    background-color: #b59463;
+    border: 1px solid black;
     justify-content: space-around;
     align-items: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 .color-button-wrap {
     width: 450px;
@@ -130,7 +144,7 @@ p {
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    border: 3px solid black;
+    border: 2px solid black;
     cursor: pointer;
 }
 .color-button:hover {

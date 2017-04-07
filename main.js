@@ -249,14 +249,14 @@ var view = {
     highlightTurnNumber: function() {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
-        var turnNumberElement = currentTurnColumn.querySelector(".turnNumber");
-        turnNumberElement.className = "turnNumber-current";
+        var turnNumberElement = currentTurnColumn.querySelector(".turnIndicator-hidden");
+        turnNumberElement.className = "turnIndicator";
     },
     unHighlightLastTurnNumber: function(turnNumber) {
         var lastTurnColumnId = "#turnColumn" + parseInt(turnNumber - 1);
         var lastTurnColumn = document.querySelector(lastTurnColumnId);
-        var lastTurnNumberElement = lastTurnColumn.querySelector(".turnNumber-current");
-        lastTurnNumberElement.className = "turnNumber";
+        var lastTurnNumberElement = lastTurnColumn.querySelector(".turnIndicator");
+        lastTurnNumberElement.className = "turnIndicator-hidden";
     },
     displaySecretCode: function(secretCode) {
         var answerColumn = document.querySelector(".board-answerColumn");
@@ -311,6 +311,7 @@ var view = {
                 var currentFeedbackPeg = currentTurnColumn.querySelector(".feedbackPos" + parseInt(j) + "-full");
                 if (currentFeedbackPeg != null) {
                     currentFeedbackPeg.className = "feedbackPeg feedbackPos" + parseInt(j);
+                    currentFeedbackPeg.style.boxShadow = "";
                 }
 
                 var currentPeg = currentTurnColumn.querySelector(".pegSlot" + parseInt(j));
