@@ -116,8 +116,8 @@ p {
     border-radius: 50%;
     background: yellow;
     position: absolute;
-    left: 21px;
-    top: 400px;
+    left: 20px;
+    top: 402px;
 }
 .turnIndicator-hidden {
     display: none;
