@@ -211,16 +211,16 @@ var view = {
         var colorPeg3 = currentTurnColumn.querySelector(".pegSlot3");
         var colorPeg4 = currentTurnColumn.querySelector(".pegSlot4");
 
-        colorPeg1.style.background = "gray";
+        colorPeg1.style.background = "#b59463";
         colorPeg1.style.boxShadow = "";
 
-        colorPeg2.style.background = "gray";
+        colorPeg2.style.background = "#b59463";
         colorPeg2.style.boxShadow = "";
 
-        colorPeg3.style.background = "gray";
+        colorPeg3.style.background = "#b59463";
         colorPeg3.style.boxShadow = "";
 
-        colorPeg4.style.background = "gray";
+        colorPeg4.style.background = "#b59463";
         colorPeg4.style.boxShadow = "";
     },
     displayFeedback: function(blackPegs, whitePegs) {
@@ -315,12 +315,12 @@ var view = {
                 }
 
                 var currentPeg = currentTurnColumn.querySelector(".pegSlot" + parseInt(j));
-                currentPeg.style.background = "gray";
+                currentPeg.style.background = "#b59463";
                 currentPeg.style.boxShadow = "";
 
                 var currentAnsPeg = answerColumn.querySelector(".pegSlot" + parseInt(j-1));
                 if (currentAnsPeg != null) {
-                    currentAnsPeg.style.background = "gray";
+                    currentAnsPeg.style.background = "#b59463";
                     currentAnsPeg.style.boxShadow = "";
                 }
                 
