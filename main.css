@@ -127,7 +127,7 @@ p {
     height: 60px;
     display: flex;
     background-color: #b59463;
-    border: 1px solid black;
+    border-top: 1px solid black;
     justify-content: space-around;
     align-items: center;
     margin-left: auto;
