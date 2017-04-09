@@ -1,3 +1,6 @@
+body {
+    font-family: sans-serif;
+}
 .board {
     display: flex;
     justify-content: flex-start;
@@ -191,4 +194,9 @@ p {
 }
 .btnReset {
     background-color: lightgray;
+}
+.textWrap {
+    width: 836px;
+    margin-left: auto;
+    margin-right: auto;
 }
