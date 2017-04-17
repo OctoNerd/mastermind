@@ -11,14 +11,14 @@ var mastermindGame = (function() {
         var i = 0,j;
         while(i < 4) {
             j = Math.floor(Math.random() * (8));
-            this.secretCode.push(j);
+            mastermindGame.secretCode.push(j);
             i++;
         }
     },
     playerGuess = function(colorNumber) {
         if(turnCounter <= 10) {
-            guessArray.push(colorNumber);
-            guessDigit++;
+            mastermindGame.guessArray.push(colorNumber);
+            mastermindGame.guessDigit += 1;
         }
     },
     checkResult = function() {
@@ -30,44 +30,43 @@ var mastermindGame = (function() {
             var k = 3;
             var flag = false;
             while(k > guessIndex){
-                if(this.guessArray[guessIndex] == this.guessArray[k]) {//check guessArray against self
+                if(mastermindGame.guessArray[guessIndex] == mastermindGame.guessArray[k]) {//check guessArray against self
                     flag = true;
                 }
                 k--;
             }
             if (flag == false) { //if it doesn't match
                 for(codeIndex=0; codeIndex<4; codeIndex++) {//check against secret code
-                    if(this.guessArray[guessIndex] == this.secretCode[codeIndex]) {
+                    if(mastermindGame.guessArray[guessIndex] == mastermindGame.secretCode[codeIndex]) {
                         correctColor++;
                     }
                 }
             }
-            if(this.guessArray[guessIndex] == this.secretCode[guessIndex]) {//check it against secretCode for position
+            if(mastermindGame.guessArray[guessIndex] == mastermindGame.secretCode[guessIndex]) {//check it against secretCode for position
                 correctPosition++;
             }   
         }
         //finds number of black and white feedback pegs. Correct position implies correct color.
-        var whitePegs = correctColor - correctPosition;
-        this.whitePegs = whitePegs;
-        this.blackPegs = correctPosition;
-        this.checkWin(this.blackPegs);
-        this.guessDigit = 1;
+        mastermindGame.whitePegs = correctColor - correctPosition;
+        mastermindGame.blackPegs = correctPosition;
+        checkWin(blackPegs);
+        mastermindGame.guessDigit = 1;
     },
     checkWin = function(blackPegs) {
-        if(blackPegs == 4) {
+        if(mastermindGame.blackPegs == 4) {
             handlers.displayFeedback();
             handlers.displaySecretCode();
             alert("You won the game!");
-            this.gameOver = true;
-        } else if (this.turnCounter == 10){
+            mastermindGame.gameOver = true;
+        } else if (mastermindGame.turnCounter == 10){
             handlers.displayFeedback();
             handlers.displaySecretCode();
             alert("Game over. You lost.");
-            this.gameOver = true;
+            mastermindGame.gameOver = true;
         } else {
             handlers.displayFeedback();
-            this.turnCounter++;
-            this.guessArray = [];
+            mastermindGame.turnCounter += 1;
+            mastermindGame.guessArray = [];
         }
     };
 
@@ -80,7 +79,8 @@ var mastermindGame = (function() {
         turnCounter: turnCounter,
         secretCode: secretCode,
         guessDigit: guessDigit,
-        generateCode: generateCode
+        generateCode: generateCode,
+        guessArray: guessArray
     };
 
 })();
@@ -137,7 +137,9 @@ var handlers = (function(){
         clearPegs: clearPegs,
         submitGuess: submitGuess,
         reset: reset,
-        addGuess: addGuess
+        addGuess: addGuess,
+        displayFeedback: displayFeedback,
+        displaySecretCode: displaySecretCode
     };
 })();
 
