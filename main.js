@@ -1,31 +1,27 @@
-var mastermindGame = {
-    //array to store the secret code.
-    secretCode: [],
-    //stores the guess digits
-    guessArray: [],
-    //generates four random numbers between 0 and 7
-    generateCode: function() {
+var mastermindGame = (function() {
+    
+    var guessDigit = 1,
+    secretCode = [],
+    guessArray = [],
+    whitePegs = 0,
+    blackPegs = 0,
+    turnCounter = 1,
+    gameOver = false,
+    generateCode = function() {
         var i = 0,j;
         while(i < 4) {
             j = Math.floor(Math.random() * (8));
-            this.secretCode.push(j);
+            mastermindGame.secretCode.push(j);
             i++;
         }
-        //console.log(this.secretCode);
     },
-    guessDigit: 1,
-    //prompts player to guess 4 digits which are then added to an array
-    playerGuess: function(colorNumber) {
-        if(this.turnCounter <= 10) {
-            this.guessArray.push(colorNumber);
-            this.guessDigit++;            
+    playerGuess = function(colorNumber) {
+        if(turnCounter <= 10) {
+            mastermindGame.guessArray.push(colorNumber);
+            mastermindGame.guessDigit += 1;
         }
-        // if(this.guessDigit == 5) {
-        //     console.log(this.guessArray);
-        // }
     },
-    //checks the digits of the guess array against the digits of the code array to see number of correct colors and positions
-    checkResult: function() {
+    checkResult = function() {
         var guessIndex = 0;
         var codeIndex = 0;
         var correctColor = 0;
@@ -34,69 +30,78 @@ var mastermindGame = {
             var k = 3;
             var flag = false;
             while(k > guessIndex){
-                if(this.guessArray[guessIndex] == this.guessArray[k]) {//check guessArray against self
+                if(mastermindGame.guessArray[guessIndex] == mastermindGame.guessArray[k]) {//check guessArray against self
                     flag = true;
                 }
                 k--;
             }
             if (flag == false) { //if it doesn't match
                 for(codeIndex=0; codeIndex<4; codeIndex++) {//check against secret code
-                    if(this.guessArray[guessIndex] == this.secretCode[codeIndex]) {
+                    if(mastermindGame.guessArray[guessIndex] == mastermindGame.secretCode[codeIndex]) {
                         correctColor++;
                     }
                 }
             }
-            if(this.guessArray[guessIndex] == this.secretCode[guessIndex]) {//check it against secretCode for position
+            if(mastermindGame.guessArray[guessIndex] == mastermindGame.secretCode[guessIndex]) {//check it against secretCode for position
                 correctPosition++;
             }   
         }
         //finds number of black and white feedback pegs. Correct position implies correct color.
-        var whitePegs = correctColor - correctPosition;
-        this.whitePegs = whitePegs;
-        this.blackPegs = correctPosition;
-        this.checkWin(this.blackPegs);
-        this.guessDigit = 1;
+        mastermindGame.whitePegs = correctColor - correctPosition;
+        mastermindGame.blackPegs = correctPosition;
+        checkWin(blackPegs);
+        mastermindGame.guessDigit = 1;
     },
-    checkWin: function(blackPegs) {
-        if(blackPegs == 4) {
+    checkWin = function(blackPegs) {
+        if(mastermindGame.blackPegs == 4) {
             handlers.displayFeedback();
             handlers.displaySecretCode();
             alert("You won the game!");
-            this.gameOver = true;
-        } else if (this.turnCounter == 10){
+            mastermindGame.gameOver = true;
+        } else if (mastermindGame.turnCounter == 10){
             handlers.displayFeedback();
             handlers.displaySecretCode();
             alert("Game over. You lost.");
-            this.gameOver = true;
+            mastermindGame.gameOver = true;
         } else {
             handlers.displayFeedback();
-            this.turnCounter++;
-            this.guessArray = [];
+            mastermindGame.turnCounter += 1;
+            mastermindGame.guessArray = [];
         }
-    },
-    whitePegs: 0,
-    blackPegs: 0,
-    turnCounter: 1,
-    gameOver: false
-}
+    };
 
-var handlers = {
-    addGuess: function(colorNumber) {
+    return {
+        playerGuess: playerGuess,
+        gameOver: gameOver,
+        checkResult: checkResult,
+        blackPegs: blackPegs,
+        whitePegs: whitePegs,
+        turnCounter: turnCounter,
+        secretCode: secretCode,
+        guessDigit: guessDigit,
+        generateCode: generateCode,
+        guessArray: guessArray
+    };
+
+})();
+
+var handlers = (function(){
+    var addGuess = function(colorNumber) {
         mastermindGame.playerGuess(colorNumber);
     },
-    changeColor: function(elementClicked) {
+    changeColor = function(elementClicked) {
         if (mastermindGame.gameOver == false) {
             view.changeColor(elementClicked);
         }
     },
-    clearPegs: function() {
+    clearPegs = function() {
         if (mastermindGame.gameOver == false) {
             mastermindGame.guessDigit = 1;
             mastermindGame.guessArray = [];
             view.clearPegs();
         }
     },
-    submitGuess: function() {
+    submitGuess = function() {
         if(mastermindGame.guessArray.length == 4 && mastermindGame.gameOver == false) {
             mastermindGame.checkResult();
             if(mastermindGame.gameOver == false) {
@@ -105,15 +110,15 @@ var handlers = {
             }
         }
     },
-    displayFeedback: function() {
+    displayFeedback = function() {
         if(mastermindGame.gameOver == false) {
             view.displayFeedback(mastermindGame.blackPegs, mastermindGame.whitePegs);
         }
     },
-    displaySecretCode: function() {
+    displaySecretCode = function() {
         view.displaySecretCode(mastermindGame.secretCode);
     },
-    reset: function() {
+    reset = function() {
         view.reset();
         mastermindGame.guessArray = [];
         mastermindGame.gameOver = false;
@@ -125,11 +130,22 @@ var handlers = {
         mastermindGame.secretCode = [];
         mastermindGame.generateCode();
         view.highlightTurnNumber();
-    }
-}
+    };
 
-var view = {
-    setUpEventListeners: function() {
+    return {
+        changeColor: changeColor,
+        clearPegs: clearPegs,
+        submitGuess: submitGuess,
+        reset: reset,
+        addGuess: addGuess,
+        displayFeedback: displayFeedback,
+        displaySecretCode: displaySecretCode
+    };
+})();
+
+var view = (function() {
+    
+    var setUpEventListeners = function() {
         document.querySelector(".button-row").addEventListener('click', function(event) {
             var elementClicked = event.target;
             if (elementClicked.className == "color-button") {
@@ -143,7 +159,7 @@ var view = {
             }
         });
     },
-    changeColor: function(elementClicked) {
+    changeColor = function(elementClicked) {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
         var currentPeg = currentTurnColumn.firstChild.nextSibling.nextSibling.nextSibling.querySelector(".pegSlot" + mastermindGame.guessDigit);
@@ -203,7 +219,7 @@ var view = {
             }
         }
     },
-    clearPegs: function() {
+    clearPegs = function() {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
         var colorPeg1 = currentTurnColumn.querySelector(".pegSlot1");
@@ -223,7 +239,7 @@ var view = {
         colorPeg4.style.background = "#e8d8c0";
         colorPeg4.style.boxShadow = "";
     },
-    displayFeedback: function(blackPegs, whitePegs) {
+    displayFeedback = function(blackPegs, whitePegs) {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
         var feedbackBox = currentTurnColumn.firstChild.nextSibling;
@@ -246,19 +262,19 @@ var view = {
             currentPeg = feedbackBox.querySelector(".feedbackPos" + i);
         }
     },
-    highlightTurnNumber: function() {
+    highlightTurnNumber = function() {
         var currentTurnColumnId = "#turnColumn" + parseInt(mastermindGame.turnCounter);
         var currentTurnColumn = document.querySelector(currentTurnColumnId);
         var turnNumberElement = currentTurnColumn.querySelector(".turnIndicator-hidden");
         turnNumberElement.className = "turnIndicator";
     },
-    unHighlightLastTurnNumber: function(turnNumber) {
+    unHighlightLastTurnNumber = function(turnNumber) {
         var lastTurnColumnId = "#turnColumn" + parseInt(turnNumber - 1);
         var lastTurnColumn = document.querySelector(lastTurnColumnId);
         var lastTurnNumberElement = lastTurnColumn.querySelector(".turnIndicator");
         lastTurnNumberElement.className = "turnIndicator-hidden";
     },
-    displaySecretCode: function(secretCode) {
+    displaySecretCode = function(secretCode) {
         var answerColumn = document.querySelector(".board-answerColumn");
         for (i=0; i<4; i++) {
             var currentPeg = answerColumn.querySelector(".pegSlot" + parseInt(i));
@@ -301,7 +317,7 @@ var view = {
             }
         }
     },
-    reset: function() {
+    reset = function() {
         for(i=1; i<11; i++) {
             var currentTurnColumnId = "#turnColumn" + parseInt(i);
             var currentTurnColumn = document.querySelector(currentTurnColumnId);
@@ -326,10 +342,20 @@ var view = {
                 
             }
         }
-    }
-}
+    };
 
+    return {
+        changeColor: changeColor,
+        clearPegs: clearPegs,
+        highlightTurnNumber: highlightTurnNumber,
+        unHighlightLastTurnNumber: unHighlightLastTurnNumber,
+        displayFeedback: displayFeedback,
+        displaySecretCode: displaySecretCode,
+        reset: reset,
+        setUpEventListeners: setUpEventListeners
+    };
+
+})();
 
 mastermindGame.generateCode();
 view.setUpEventListeners();
-view.highlightTurnNumber();
